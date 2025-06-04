@@ -5,7 +5,8 @@ import './App.css';
 
 const App = () => {
     // State to hold the spells data
-  const [spells, setSpells] = useState([]);
+  const [spells, setSpells] = useState([]); 
+  const [spellSearch, setSpellSearch] = useState(""); 
 
 
   const spellSchoolColors = {
@@ -38,6 +39,10 @@ const boldConcentration = (text) => {
     setSpells(spellsData);
   }, []);
 
+  console.log("spells:", spells);
+  const search = spellSearch || "";
+  const filteredSpells = spells.filter((spell) => spell?.name?.toLowerCase().includes(search.toLowerCase()));
+
   return (
     <div>
       <header class="text-white body-font">
@@ -55,7 +60,7 @@ const boldConcentration = (text) => {
       <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
         <div class="relative flex-grow w-full">
           <label for="full-name" class="leading-7 text-sm">Spell Name</label>
-          <input type="text" id="spell-name" name="spell-name" class="w-full h-8 bg-white bg-opacity-50 rounded border border-gray-300 focus:border-violet-950 focus:bg-violet-200 focus:text-cyan-700 focus:ring-2 focus:ring-violet-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></input>
+          <input type="text" placeholder="Search Spells" value={spellSearch} onChange={(e) => setSpellSearch(e.target.value)} id="spell-name" name="spell-name" class="w-full h-8 bg-white bg-opacity-50 rounded border border-gray-300 focus:border-violet-950 focus:bg-violet-200 focus:text-cyan-700 focus:ring-2 focus:ring-violet-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out"></input>
         </div>
         <div class="relative flex-grow w-full">
           <label for="spell-class" class="leading-7 text-sm">Class</label>
@@ -90,12 +95,12 @@ const boldConcentration = (text) => {
     </div>
   </section>
   <section id="spells" class="text-black capitalize">
-    <div class="container px-5  mx-auto bg-transparent rounded">
-          {spells.map((spell, index) => {
+    <div class="container px-5 mx-auto bg-transparent rounded">
+          {filteredSpells.map((spell, index) => {
             const schoolColors = spellSchoolColors[spell.school];
             const schoolGradient = spellSchoolGradients[spell.school];
             return (
-              <div key={index} class={`bg-white p-4 rounded shadow mb-4 hover:scale-105 flex justify-between items-start ${schoolGradient} transition duration-300 ease-in-out`}>
+              <div key={index} class={`bg-white p-4 rounded shadow mb-4 hover:scale-105 flex justify-between items-start ${schoolGradient} transition duration-300 ease-in-out animate-fadeIn`}>
                 <div class="flex-col text-left">
                   <h2 class="text-xl font-bold">{spell.name}</h2>
                   <p>Level: {spell.level}</p>
