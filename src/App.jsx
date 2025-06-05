@@ -1,7 +1,7 @@
 import './App.css';
 import { useState, useEffect } from 'react';
 import spellsData from './spells.json';
-// import Modal from ".Modal";
+import Modal from "./Modal";
 
 const App = () => {
   const [spells, setSpells] = useState([]); 
