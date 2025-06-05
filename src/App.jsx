@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react';
-import spellsData from './spells.json'; // assuming it's in the same directory
-
 import './App.css';
+import { useState, useEffect } from 'react';
+import spellsData from './spells.json';
+// import Modal from ".Modal";
 
 const App = () => {
-    // State to hold the spells data
   const [spells, setSpells] = useState([]); 
-  const [spellSearch, setSpellSearch] = useState(""); 
+  const [spellSearch, setSpellSearch] = useState("");
+  const [spellClass, setSpellClass] = useState("All");
+  const [spellLevel, setSpellLevel] = useState("All"); 
 
 
   const spellSchoolColors = {
@@ -41,7 +42,10 @@ const boldConcentration = (text) => {
 
   console.log("spells:", spells);
   const search = spellSearch || "";
-  const filteredSpells = spells.filter((spell) => spell?.name?.toLowerCase().includes(search.toLowerCase()));
+  const filteredSpells = spells.filter((spell) => spell.name.toLowerCase().includes(search.toLowerCase()))
+  .filter((spell) => spellClass === "All" ? true : spell.classes.includes(spellClass.toLowerCase()))
+  .filter((spell) => spellLevel === "All" ? true : spell.level === (spellLevel));
+
 
   return (
     <div>
@@ -64,7 +68,7 @@ const boldConcentration = (text) => {
         </div>
         <div class="relative flex-grow w-full">
           <label for="spell-class" class="leading-7 text-sm">Class</label>
-          <select  id="spell-class" name="spell-class" class="w-full bg-white bg-opacity-50 rounded border border-gray-300 focus:border-violet-950  focus:ring-2 focus:ring-violet-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <select  id="spell-class" name="spell-class" value={spellClass} onChange={(e) => setSpellClass(e.target.value)} class="w-full bg-white bg-opacity-50 rounded border border-gray-300 focus:border-violet-950  focus:ring-2 focus:ring-violet-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
           <option>All</option>
           <option>Bard</option>
           <option>Cleric</option>
@@ -78,7 +82,7 @@ const boldConcentration = (text) => {
         </div>
         <div class="relative flex-grow w-full">
           <label for="spell-level" class="leading-7 text-sm">Spell Level</label>
-          <select id="spell-level" name="spell-level" class="w-full bg-white bg-opacity-50 rounded border border-gray-300 focus:border-violet-950 focus:ring-2 focus:ring-violet-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+          <select id="spell-level" name="spell-level" value={spellLevel} onChange={(e) => setSpellLevel(e.target.value)} class="w-full bg-white bg-opacity-50 rounded border border-gray-300 focus:border-violet-950 focus:ring-2 focus:ring-violet-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
           <option>All</option>
           <option>1</option>
           <option>2</option>
@@ -100,7 +104,7 @@ const boldConcentration = (text) => {
             const schoolColors = spellSchoolColors[spell.school];
             const schoolGradient = spellSchoolGradients[spell.school];
             return (
-              <div key={index} class={`bg-white p-4 rounded shadow mb-4 hover:scale-105 flex justify-between items-start ${schoolGradient} transition duration-300 ease-in-out animate-fadeIn`}>
+              <div key={index} class={`bg-white p-4 rounded shadow mb-4 hover:scale-105 flex justify-between items-start ${schoolGradient} transition duration-300 ease-in-out animate-fadeIn cursor-pointer`}>
                 <div class="flex-col text-left">
                   <h2 class="text-xl font-bold">{spell.name}</h2>
                   <p>Level: {spell.level}</p>
