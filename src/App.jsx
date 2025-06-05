@@ -8,8 +8,8 @@ const App = () => {
   const [spellSearch, setSpellSearch] = useState("");
   const [spellClass, setSpellClass] = useState("All");
   const [spellLevel, setSpellLevel] = useState("All"); 
-
-
+  const [spellModal, setSpellModal] = useState("");
+  
   const spellSchoolColors = {
   abjuration: "text-blue-700",
   conjuration: "text-orange-400",
@@ -44,18 +44,22 @@ const boldConcentration = (text) => {
   const search = spellSearch || "";
   const filteredSpells = spells.filter((spell) => spell.name.toLowerCase().includes(search.toLowerCase()))
   .filter((spell) => spellClass === "All" ? true : spell.classes.includes(spellClass.toLowerCase()))
-  .filter((spell) => spellLevel === "All" ? true : spell.level === (spellLevel));
+  .filter((spell) => {
+    if (spellLevel === "All") return true;
+    if (spellLevel === "Cantrip") return spell.level === "cantrip";
+    return String(spell.level) === spellLevel;
+  });
 
 
   return (
     <div>
-      <header class="text-white body-font">
+      <header class="text-white">
         <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
           <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0">Character
           </button>
         </div>
       </header>
-  <section class="text-white body-font">
+  <section>
     <div class="container px-5 py-24 mx-auto">
       <div class="flex flex-col text-center w-full mb-12">
         <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4">5.5E Spellbook</h1>
@@ -84,6 +88,7 @@ const boldConcentration = (text) => {
           <label for="spell-level" class="leading-7 text-sm">Spell Level</label>
           <select id="spell-level" name="spell-level" value={spellLevel} onChange={(e) => setSpellLevel(e.target.value)} class="w-full bg-white bg-opacity-50 rounded border border-gray-300 focus:border-violet-950 focus:ring-2 focus:ring-violet-400 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
           <option>All</option>
+          <option>Cantrip</option>
           <option>1</option>
           <option>2</option>
           <option>3</option>
@@ -98,29 +103,31 @@ const boldConcentration = (text) => {
       </div>
     </div>
   </section>
-  <section id="spells" class="text-black capitalize">
+  <section id="spells" class="text-black">
     <div class="container px-5 mx-auto bg-transparent rounded">
-          {filteredSpells.map((spell, index) => {
-            const schoolColors = spellSchoolColors[spell.school];
-            const schoolGradient = spellSchoolGradients[spell.school];
-            return (
-              <div key={index} class={`bg-white p-4 rounded shadow mb-4 hover:scale-105 flex justify-between items-start ${schoolGradient} transition duration-300 ease-in-out animate-fadeIn cursor-pointer`}>
-                <div class="flex-col text-left">
-                  <h2 class="text-xl font-bold">{spell.name}</h2>
-                  <p>Level: {spell.level}</p>
-                  <p>{spell.classes.join(", ")}</p>
-                </div>
-                <div class="flex-col text-right">
-                  <p class={`${schoolColors} font-bold`}>{spell.school}</p>
-                  <p>{spell.casting_time}</p>
-                  <p dangerouslySetInnerHTML={{__html: boldConcentration(spell.duration)}}></p>
-                </div>
+        {filteredSpells.map((spell, index) => {
+          const schoolColors = spellSchoolColors[spell.school];
+          const schoolGradient = spellSchoolGradients[spell.school];
+          return (
+            <div key={index} onClick={() => setSpellModal(spell)} class={`bg-white p-4 rounded shadow mb-4 hover:scale-105 flex justify-between items-start ${schoolGradient} transition duration-300 ease-in-out animate-fadeIn cursor-pointer`}>
+              <div class="flex-col text-left">
+                <h2 class="text-xl font-bold capitalize">{spell.name}</h2>
+                <p class="capitalize">Level: {spell.level}</p>
+                <p class="capitalize">{spell.classes.join(", ")}</p>
               </div>
-            );
-          })}
-        </div>
-  </section>
+              <div class="flex-col text-right">
+                <p class={`${schoolColors} font-bold capitalize`}>{spell.school}</p>
+                <p>{spell.casting_time}</p>
+                <p dangerouslySetInnerHTML={{__html: boldConcentration(spell.duration)}}></p>
+              </div>
+            </div>
+          );
+        })}
       </div>
+      {spellModal && (<Modal spell={spellModal} onClose={() => setSpellModal(null)} />
+      )}
+    </section>
+  </div>
   )
 }
 
