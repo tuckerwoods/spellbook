@@ -1,12 +1,29 @@
-# React + Vite
+# 5.5E Spellbook Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Hello! I made this website over a few days to learn React and TailwindCSS. Currently not all the features are implemented, but I wanted to put it up on my portfolio anyways.
 
-Currently, two official plugins are available:
+## Features
+- Search spells by name
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Filter by spell class and level
 
-## Expanding the ESLint configuration
+- View full spell descriptions in modals
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Tech Stack
+- React
+
+- Tailwind CSS
+
+- Headless UI for modals
+
+- React Markdown
+
+- JSON file for spells data
+
+## Future Improvements
+- User accounts that allow for users to make characters and save spells under them so they can keep track of what their character knows
+
+- UI/UX enhancements for Accessibility
+
+[Demo Video](https://youtu.be/2uj6CXeaFLU)
+
