@@ -24,6 +24,8 @@ Hello! I made this website over a few days to learn React and TailwindCSS. Curre
 - User accounts that allow for users to make characters and save spells under them so they can keep track of what their character knows
 
 - UI/UX enhancements for Accessibility
+- 
+- Mobile Improvments
 
 [Demo Video](https://youtu.be/2uj6CXeaFLU)
 
